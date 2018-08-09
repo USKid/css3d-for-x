@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<head>
+    <script src="../css3d.js"></script>
+    <style>
+        #main {
+            width: 500px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="main">
+
+</div>
+<script>
+    //创建场景
+    var s = new C3D.Stage();
+    s.size(window.innerWidth, window.innerHeight).material({
+        color: "#fff"
+    }).update();
+    document.getElementById('main').appendChild(s.el);
+
+    //创建1个立方体放入场景
+    var panoRect = {w: 16382, h: 3628};
+    var bgData = [
+        {url: 'uskid/uskid01.jpg'},
+        {url: 'uskid/uskid02.jpg'},
+        {url: 'uskid/uskid03.jpg'},
+        {url: 'uskid/uskid04.jpg'},
+        {url: 'uskid/uskid05.jpg'},
+        {url: 'uskid/uskid06.jpg'},
+        {url: 'uskid/uskid07.jpg'},
+        {url: 'uskid/uskid08.jpg'},
+        {url: 'uskid/uskid09.jpg'},
+        {url: 'uskid/uskid10.jpg'},
+        {url: 'uskid/uskid11.jpg'},
+        {url: 'uskid/uskid12.jpg'},
+        {url: 'uskid/uskid13.jpg'},
+        {url: 'uskid/uskid14.jpg'},
+        {url: 'uskid/uskid15.jpg'},
+        {url: 'uskid/uskid16.jpg'},
+        {url: 'uskid/uskid17.jpg'},
+        {url: 'uskid/uskid18.jpg'},
+        {url: 'uskid/uskid19.jpg'},
+        {url: 'uskid/uskid20.jpg'},
+        {url: 'uskid/uskid21.jpg'},
+        {url: 'uskid/uskid22.jpg'},
+        {url: 'uskid/uskid23.jpg'},
+        {url: 'uskid/uskid24.jpg'},
+        {url: 'uskid/uskid25.jpg'},
+        {url: 'uskid/uskid26.jpg'},
+        {url: 'uskid/uskid27.jpg'},
+        {url: 'uskid/uskid28.jpg'},
+        {url: 'uskid/uskid29.jpg'},
+        {url: 'uskid/uskid30.jpg'},
+        {url: 'uskid/uskid31.jpg'},
+        {url: 'uskid/uskid32.jpg'},
+        {url: 'uskid/uskid33.jpg'},
+        {url: 'uskid/uskid34.jpg'},
+        {url: 'uskid/uskid35.jpg'},
+        {url: 'uskid/uskid36.jpg'},
+        {url: 'uskid/uskid37.jpg'},
+        {url: 'uskid/uskid38.jpg'},
+        {url: 'uskid/uskid39.jpg'},
+        {url: 'uskid/uskid40.jpg'},
+        {url: 'uskid/uskid41.jpg'},
+        {url: 'uskid/uskid42.jpg'},
+        {url: 'uskid/uskid43.jpg'},
+        {url: 'uskid/uskid44.jpg'},
+        {url: 'uskid/uskid45.jpg'},
+        {url: 'uskid/uskid46.jpg'},
+        {url: 'uskid/uskid47.jpg'},
+        {url: 'uskid/uskid48.jpg'},
+        {url: 'uskid/uskid49.jpg'},
+        {url: 'uskid/uskid50.jpg'},
+        {url: 'uskid/uskid51.jpg'},
+        {url: 'uskid/uskid52.jpg'},
+        {url: 'uskid/uskid53.jpg'},
+        {url: 'uskid/uskid54.jpg'},
+        {url: 'uskid/uskid55.jpg'},
+        {url: 'uskid/uskid56.jpg'},
+        {url: 'uskid/uskid57.jpg'},
+        {url: 'uskid/uskid58.jpg'},
+        {url: 'uskid/uskid59.jpg'},
+        {url: 'uskid/uskid60.jpg'},
+    ];
+
+    function createPano(imgs, rect) {
+        var _len = imgs.length;
+        var _step = rect.w / _len;
+        var _radius = Math.floor(_step / 2 / Math.tan(Math.PI / _len)) - 1;
+
+        var _sp = new C3D.Sprite();
+        for (var i = 0; i < _len; i++) {
+            var _p = new C3D.Plane();
+            var _r = 360 / _len * i;
+            var _a = Math.PI * 2 / _len * i;
+            _p.size(_step, rect.h).position(Math.sin(_a) * _radius, 0, -Math.cos(_a) * _radius).rotation(0, -_r, 0).material({
+                image: imgs[i].url,
+                repeat: 'no-repeat',
+                bothsides: false,
+            }).update();
+            _sp.addChild(_p);
+        }
+
+        return _sp;
+    }
+
+    var pano = this.createPano(bgData, panoRect);
+    pano.position(0, 0, 250).updateT();
+    s.addChild(pano);
+
+    //响应屏幕调整尺寸
+    function resize() {
+        s.size(window.innerWidth, window.innerHeight).update();
+    }
+
+    window.onresize = function () {
+        resize();
+    };
+    resize();
+
+    //刷新场景
+    requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame ||
+            function (callback) {
+                setTimeout(callback, 1000 / 60);
+            };
+
+    function go() {
+        pano.rotate(0, 0.1, 0).updateT();
+
+        requestAnimationFrame(go);
+    }
+
+    requestAnimationFrame(go);
+
+</script>
+</body>

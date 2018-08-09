@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<head>
+    <script src="../css3d.js"></script>
+    <script src="../orienter.js"></script>
+    <style>
+        #main {
+            width: 500px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="main">
+
+</div>
+<script>
+    //创建场景
+    var s = new C3D.Stage();
+    s.size(window.innerWidth, window.innerHeight).material({
+        color: "#ABA38F"
+    }).update();
+    document.getElementById('main').appendChild(s.el);
+
+    //创建1个立方体放入场景
+    var panoRect = {w: 20334, h: 2897};
+    var bgData = [
+        {url: 'xsw/xsw01.jpg'},
+        {url: 'xsw/xsw02.jpg'},
+        {url: 'xsw/xsw03.jpg'},
+        {url: 'xsw/xsw04.jpg'},
+        {url: 'xsw/xsw05.jpg'},
+        {url: 'xsw/xsw06.jpg'},
+        {url: 'xsw/xsw07.jpg'},
+        {url: 'xsw/xsw08.jpg'},
+        {url: 'xsw/xsw09.jpg'},
+        {url: 'xsw/xsw10.jpg'},
+        {url: 'xsw/xsw11.jpg'},
+        {url: 'xsw/xsw12.jpg'},
+        {url: 'xsw/xsw13.jpg'},
+        {url: 'xsw/xsw14.jpg'},
+        {url: 'xsw/xsw15.jpg'},
+        {url: 'xsw/xsw16.jpg'},
+        {url: 'xsw/xsw17.jpg'},
+        {url: 'xsw/xsw18.jpg'},
+        {url: 'xsw/xsw19.jpg'},
+        {url: 'xsw/xsw20.jpg'},
+        {url: 'xsw/xsw21.jpg'},
+        {url: 'xsw/xsw22.jpg'},
+        {url: 'xsw/xsw23.jpg'},
+        {url: 'xsw/xsw24.jpg'},
+        {url: 'xsw/xsw25.jpg'},
+        {url: 'xsw/xsw26.jpg'},
+        {url: 'xsw/xsw27.jpg'},
+        {url: 'xsw/xsw28.jpg'},
+        {url: 'xsw/xsw29.jpg'},
+        {url: 'xsw/xsw30.jpg'},
+        {url: 'xsw/xsw31.jpg'},
+        {url: 'xsw/xsw32.jpg'},
+        {url: 'xsw/xsw33.jpg'},
+        {url: 'xsw/xsw34.jpg'},
+        {url: 'xsw/xsw35.jpg'},
+        {url: 'xsw/xsw36.jpg'},
+        {url: 'xsw/xsw37.jpg'},
+        {url: 'xsw/xsw38.jpg'},
+        {url: 'xsw/xsw39.jpg'},
+        {url: 'xsw/xsw40.jpg'},
+        {url: 'xsw/xsw41.jpg'},
+        {url: 'xsw/xsw42.jpg'},
+        {url: 'xsw/xsw43.jpg'},
+        {url: 'xsw/xsw44.jpg'},
+        {url: 'xsw/xsw45.jpg'},
+        {url: 'xsw/xsw46.jpg'},
+        {url: 'xsw/xsw47.jpg'},
+        {url: 'xsw/xsw48.jpg'},
+        {url: 'xsw/xsw49.jpg'},
+        {url: 'xsw/xsw50.jpg'},
+        {url: 'xsw/xsw51.jpg'},
+        {url: 'xsw/xsw52.jpg'},
+        {url: 'xsw/xsw53.jpg'},
+        {url: 'xsw/xsw54.jpg'},
+        {url: 'xsw/xsw55.jpg'},
+        {url: 'xsw/xsw56.jpg'},
+        {url: 'xsw/xsw57.jpg'},
+        {url: 'xsw/xsw58.jpg'},
+        {url: 'xsw/xsw59.jpg'},
+        {url: 'xsw/xsw60.jpg'},
+    ];
+
+    function createPano(imgs, rect) {
+        var _len = imgs.length;
+        var _step = rect.w / _len;
+        var _radius = Math.floor(_step / 2 / Math.tan(Math.PI / _len)) - 1;
+
+        var _sp = new C3D.Sprite();
+        for (var i = 0; i < _len; i++) {
+            var _p = new C3D.Plane();
+            var _r = 360 / _len * i;
+            var _a = Math.PI * 2 / _len * i;
+            _p.size(_step, rect.h).position(Math.sin(_a) * _radius, 0, -Math.cos(_a) * _radius).rotation(0, -_r, 0).material({
+                image: imgs[i].url,
+                repeat: 'no-repeat',
+                bothsides: false,
+            }).update();
+            _sp.addChild(_p);
+        }
+
+        return _sp;
+    }
+
+    var pano = this.createPano(bgData, panoRect);
+    pano.position(0, 0, 1350).updateT();
+    s.addChild(pano);
+
+    //响应屏幕调整尺寸
+    function resize() {
+        s.size(window.innerWidth, window.innerHeight).update();
+    }
+
+    window.onresize = function () {
+        resize();
+    };
+    resize();
+
+    //刷新场景
+    requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame ||
+            function (callback) {
+                setTimeout(callback, 1000 / 60);
+            };
+
+    function go() {
+        pano.rotate(0, 0.1, 0).updateT();
+
+        requestAnimationFrame(go);
+    }
+
+    // requestAnimationFrame(go);
+
+        // 陀螺仪
+    const o = new Orienter();
+    let preObj = ''
+    o.onOrient = function (obj) {
+      if (!preObj || preObj.obj === 360 || preObj.obj === 0) {
+        preObj = obj
+        return
+      }
+      let lat = obj.lat - preObj.lat
+      let lon = obj.lon - preObj.lon
+      preObj = obj
+      pano.rotate(lat/10, -lon*2, 0).updateT();
+    };
+    o.init();
+
+</script>
+</body>
